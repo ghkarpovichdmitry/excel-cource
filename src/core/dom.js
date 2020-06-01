@@ -10,8 +10,23 @@ class Dom {
       this.$el.innerHTML = html;
       return this;
     }
-
     return this.$el.outerHTML.trim();
+  }
+
+  text(text) {
+    const isInputElement = this.$el.tagName.toLowerCase() === 'input';
+
+    if (typeof text === 'string') {
+      if (isInputElement) {
+        this.$el.value = text;
+      }
+      this.$el.textContent = text;
+      return this;
+    }
+    if (isInputElement) {
+      return this.$el.value.trim();
+    }
+    return this.$el.textContent.trim();
   }
 
   clear() {
@@ -31,12 +46,12 @@ class Dom {
     if (node instanceof Dom) {
       node = node.$el;
     }
-
     if (Element.prototype.append) {
       this.$el.append(node);
     } else {
       this.$el.appendChild(node);
     }
+    return this;
   }
 
   get data() {
@@ -51,6 +66,20 @@ class Dom {
     return this.$el.getBoundingClientRect();
   }
 
+  addClass(className) {
+    this.$el.classList.add(className);
+    return this;
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className);
+    return this;
+  }
+
+  find(selector) {
+    return $(this.$el.querySelector(selector));
+  }
+
   findAll(selector) {
     return this.$el.querySelectorAll(selector);
   }
@@ -61,6 +90,22 @@ class Dom {
         .forEach(key => {
           this.$el.style[key] = styles[key];
         })
+  }
+
+  focus() {
+    this.$el.focus();
+    return this;
+  }
+
+  id(parse) {
+    if (parse) {
+      const parsed = this.id().split(':');
+      return {
+        row: +parsed[0],
+        col: +parsed[1]
+      }
+    }
+    return this.data.id;
   }
 
   // create(tagName, classes = '') {
@@ -85,6 +130,5 @@ $.create = (tagName, classes = '') => {
   if (classes) {
     el.classList.add(classes);
   }
-
   return $(el);
 };

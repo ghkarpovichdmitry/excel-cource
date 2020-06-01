@@ -58,7 +58,8 @@
     border: 1px solid $border-cell;
     border-top-color: transparent;
     border-left-color: transparent;
-    white-space: nowrap; 
+    white-space: nowrap;
+    font-size: 1rem;
 
     &.selected {
       border: none;
