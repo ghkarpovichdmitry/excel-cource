@@ -5,7 +5,6 @@ export class DOMListener {
     if (!$root) {
       throw new Error('No $root');
     }
-
     this.$root = $root;
     this.listeners = listeners;
   }
@@ -18,7 +17,6 @@ export class DOMListener {
         throw new Error(
             `Method ${method} is not implemented in ${this.name} component`);
       }
-
       this[method] = this[method].bind(this);
       this.$root.on(listener, this[method]);
     })
